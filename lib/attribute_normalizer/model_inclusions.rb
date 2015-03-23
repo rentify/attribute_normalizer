@@ -68,16 +68,16 @@ module AttributeNormalizer
 
     def normalize_default_attributes
       AttributeNormalizer.configuration.default_attributes.each do |attribute_name, options|
-        normalize_attribute(attribute_name, options) if self.column_names.include?(attribute_name)
+        normalize_attribute(attribute_name, options) if self.column_names.include?(attribute_name.to_s)
       end
     end
 
-    # def inherited(subclass)
-    #   super
-    #   if subclass.name.present? && subclass.respond_to?(:table_exists?) && (subclass.table_exists? rescue false)
-    #     subclass.normalize_default_attributes
-    #   end
-    # end
+    def inherited(subclass)
+      super
+      if subclass.name.present? && subclass.respond_to?(:table_exists?) && (subclass.table_exists? rescue false)
+        subclass.normalize_default_attributes
+      end
+    end
 
   end
 
